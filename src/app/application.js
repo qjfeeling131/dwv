@@ -49,6 +49,9 @@ dwv.App = function ()
     var tags = null;
     var tagsGui = null;
 
+    // Report gui
+    var reportGui = null;
+
     // Drawing list gui
     var drawListGui = null;
 
@@ -316,6 +319,10 @@ dwv.App = function ()
                     helpResourcesPath = config.helpResourcesPath;
                 }
                 dwv.gui.appendHelpHtml( toolboxController.getToolList(), isMobile, this );
+            }
+            //report
+            if ( config.gui.indexOf("report") !== -1 ) {
+                reportGui = new dwv.gui.Report(this);
             }
         }
 
@@ -1055,7 +1062,7 @@ dwv.App = function ()
         var state = new dwv.State();
         // add href to link (html5)
         var element = self.getElement("download-state");
-        var blob = new Blob([state.toJSON(self)], {type: 'application/json'});
+        var blob = new Blob([e.toJSON(self)], {type: 'application/json'});
         element.href = window.URL.createObjectURL(blob);
     };
 
@@ -1362,7 +1369,7 @@ dwv.App = function ()
     function createLayers(dataWidth, dataHeight)
     {
         // image layer
-        var canImgLay = self.getElement("imageLayer");
+        var canImgLay = self.getElement("dropBox");
         imageLayer = new dwv.html.Layer(canImgLay);
         imageLayer.initialise(dataWidth, dataHeight);
         imageLayer.fillContext();
@@ -1400,6 +1407,11 @@ dwv.App = function ()
         if ( tagsGui ) {
             tagsGui.update(data.info);
         }
+        // append the DICOM tags table to report UI
+        if ( reportGui ) {
+            reportGui.update(data.info);
+        }
+
         // store image
         originalImage = view.getImage();
         image = originalImage;
