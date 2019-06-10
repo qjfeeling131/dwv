@@ -1062,7 +1062,7 @@ dwv.App = function ()
         var state = new dwv.State();
         // add href to link (html5)
         var element = self.getElement("download-state");
-        var blob = new Blob([e.toJSON(self)], {type: 'application/json'});
+        var blob = new Blob([state.toJSON(self)], {type: 'application/json'});
         element.href = window.URL.createObjectURL(blob);
     };
 
@@ -1369,7 +1369,7 @@ dwv.App = function ()
     function createLayers(dataWidth, dataHeight)
     {
         // image layer
-        var canImgLay = self.getElement("dropBox");
+        var canImgLay = self.getElement("imageLayer");
         imageLayer = new dwv.html.Layer(canImgLay);
         imageLayer.initialise(dataWidth, dataHeight);
         imageLayer.fillContext();
