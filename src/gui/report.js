@@ -12,6 +12,17 @@ dwv.gui.base.Report = function (app) {
     this.update = function (dataInfo) {
         // HTML node
         console.log(dataInfo);
+        var imageType=dataInfo.find(function(data){return data.name==="ImageType"})
+        var specificArrary=new Array();
+        if(imageType !=null){
+            specificArrary.push(imageType);
+            var name =  dataInfo.find(function(data){return data.name === "PatientName"})
+            var age = dataInfo.find(function(data){return data.name==="PatientSex"});
+            var gender = dataInfo.find(function(data){return data.name==="PatientAge"});
+            specificArrary.push(name);
+            specificArrary.push(age);
+            specificArrary.push(gender);
+        }
         var reportEditNode = app.getElement("report-edit");
         var reportParentNode = reportEditNode.parentNode;
         var reportInfoNode = app.getElement("report-info");
@@ -33,7 +44,14 @@ dwv.gui.base.Report = function (app) {
         var newReportInfoNode = document.createElement("div");
         newReportInfoNode.className = "report-info";
         // tags HTML table
-        var table = dwv.html.toTable(dataInfo);
+        var table;
+        if(specificArrary.length>1){
+            table = dwv.html.toTable(specificArrary);
+        }
+        else{
+            table = dwv.html.toTable(dataInfo);
+        }
+      
         table.className = "reportTable";
 
         // optional gui specific table post process
